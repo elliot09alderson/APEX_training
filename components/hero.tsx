@@ -1,7 +1,6 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useMotionValueEvent, useReducedMotion, useScroll } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import { ArrowRight, MouseScroll } from "@phosphor-icons/react";
 import { AutoVideo } from "@/components/auto-video";
 import { heroMedia, joinCta } from "@/lib/content";
@@ -10,27 +9,6 @@ const lines = ["Built by a fighter.", "Not a template."];
 
 export function Hero() {
   const reduce = useReducedMotion();
-  const { scrollY } = useScroll();
-  const snapping = useRef(false);
-
-  // A small downward scroll out of the hero commits to the next section.
-  useMotionValueEvent(scrollY, "change", (y) => {
-    if (reduce || snapping.current) return;
-
-    const previous = scrollY.getPrevious() ?? 0;
-    const goingDown = y > previous;
-    const stillInHero = y > 16 && y < window.innerHeight * 0.55;
-
-    if (goingDown && stillInHero) {
-      snapping.current = true;
-      document
-        .getElementById("record")
-        ?.scrollIntoView({ behavior: "smooth", block: "start" });
-      window.setTimeout(() => {
-        snapping.current = false;
-      }, 900);
-    }
-  });
 
   return (
     <section
